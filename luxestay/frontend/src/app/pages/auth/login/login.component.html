@@ -1,0 +1,93 @@
+<div class="auth-page">
+  <!-- Left Panel -->
+  <div class="auth-visual">
+    <div class="visual-content">
+      <div class="visual-brand">
+        <span class="logo-gem">✦</span>
+        <span class="logo-text">LuxeStay</span>
+      </div>
+      <h1 class="visual-title">L'excellence<br/>hôtelière<br/>réinventée.</h1>
+      <p class="visual-sub">Gérez votre établissement avec élégance et précision grâce à notre système de gestion hôtelière premium.</p>
+      <div class="visual-stats">
+        <div class="v-stat"><span class="v-num">99%</span><span class="v-lbl">Satisfaction</span></div>
+        <div class="v-stat"><span class="v-num">24/7</span><span class="v-lbl">Support</span></div>
+        <div class="v-stat"><span class="v-num">∞</span><span class="v-lbl">Scalable</span></div>
+      </div>
+    </div>
+    <div class="visual-orb orb-1"></div>
+    <div class="visual-orb orb-2"></div>
+  </div>
+
+  <!-- Right Panel — Form -->
+  <div class="auth-form-panel">
+    <div class="auth-form-container fade-in">
+      <div class="form-header">
+        <h2>Connexion</h2>
+        <p>Accédez à votre espace de gestion</p>
+      </div>
+
+      <div class="error-alert" *ngIf="error">
+        <span>⚠</span> {{ error }}
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <div class="form-group">
+          <label>Adresse email</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉</span>
+            <input
+              class="form-control with-icon"
+              type="email"
+              [(ngModel)]="credentials.email"
+              name="email"
+              placeholder="admin@luxestay.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              class="form-control with-icon"
+              [type]="showPassword ? 'text' : 'password'"
+              [(ngModel)]="credentials.password"
+              name="password"
+              placeholder="••••••••"
+              required
+              autocomplete="current-password"
+            />
+            <button type="button" class="pw-toggle" (click)="showPassword = !showPassword">
+              {{ showPassword ? '🙈' : '👁' }}
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-luxe btn-primary submit-btn" [disabled]="loading">
+          <span *ngIf="!loading">Se connecter →</span>
+          <span *ngIf="loading" class="spinner"></span>
+        </button>
+      </form>
+
+      <div class="form-footer">
+        <div class="demo-creds">
+          <span class="creds-label">Comptes démo :</span>
+          <div class="cred-row">
+            <code>admin&#64;luxestay.com</code>
+            <span class="cred-sep">/</span>
+            <code>Admin&#64;123</code>
+            <span class="badge-luxe gold">Admin</span>
+          </div>
+          <div class="cred-row">
+            <code>receptionist&#64;luxestay.com</code>
+            <span class="cred-sep">/</span>
+            <code>Admin&#64;123</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

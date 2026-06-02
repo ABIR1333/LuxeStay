@@ -1,0 +1,161 @@
+<!-- Toast -->
+<div class="toast-container" *ngIf="toast">
+  <div class="toast" [class]="toast.type">{{ toast.msg }}</div>
+</div>
+
+<!-- Page -->
+<div class="fade-in">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Chambres</h1>
+      <p class="page-subtitle">{{ stats.total }} chambres · {{ stats.available }} disponibles · {{ stats.occupied }} occupées</p>
+    </div>
+    <button class="btn-luxe btn-primary" *ngIf="authService.isAdmin()" (click)="openCreate()">+ Ajouter chambre</button>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="grid-4" style="margin-bottom:1.5rem">
+    <div class="stat-card"><div class="stat-icon gold">🏨</div><div class="stat-content"><div class="stat-label">Total</div><div class="stat-value">{{stats.total}}</div></div></div>
+    <div class="stat-card"><div class="stat-icon success">✓</div><div class="stat-content"><div class="stat-label">Disponibles</div><div class="stat-value">{{stats.available}}</div></div></div>
+    <div class="stat-card"><div class="stat-icon danger">●</div><div class="stat-content"><div class="stat-label">Occupées</div><div class="stat-value">{{stats.occupied}}</div></div></div>
+    <div class="stat-card"><div class="stat-icon warning">🔧</div><div class="stat-content"><div class="stat-label">Maintenance</div><div class="stat-value">{{stats.maintenance}}</div></div></div>
+  </div>
+
+  <!-- Filters -->
+  <div class="luxe-card filters-bar">
+    <input class="form-control" style="flex:1;min-width:180px" type="text" placeholder="🔍  Rechercher chambre..." [(ngModel)]="searchQuery" (ngModelChange)="applyFilter()"/>
+    <select class="form-control" style="width:160px" [(ngModel)]="filterStatus" (ngModelChange)="applyFilter()">
+      <option value="">Tous les statuts</option>
+      <option *ngFor="let s of roomStatuses" [value]="s">{{ statusLabel(s) }}</option>
+    </select>
+    <select class="form-control" style="width:150px" [(ngModel)]="filterType" (ngModelChange)="applyFilter()">
+      <option value="">Tous les types</option>
+      <option *ngFor="let t of roomTypes" [value]="t">{{ t }}</option>
+    </select>
+  </div>
+
+  <!-- Table -->
+  <div class="luxe-card table-card">
+    <div *ngIf="loading" class="empty-state"><div class="loading-spinner"></div></div>
+
+    <div *ngIf="!loading && filtered.length === 0" class="empty-state">
+      <div class="empty-icon">🛏</div>
+      <h4>Aucune chambre trouvée</h4>
+      <p>Modifiez vos filtres ou ajoutez une chambre.</p>
+    </div>
+
+    <table class="luxe-table" *ngIf="!loading && filtered.length > 0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Chambre</th>
+          <th>Type</th>
+          <th>Étage</th>
+          <th>Capacité</th>
+          <th>Prix / nuit</th>
+          <th>Statut</th>
+          <th>Équipements</th>
+          <th *ngIf="authService.isAdmin()">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let room of filtered">
+          <td class="text-muted">{{ room.id }}</td>
+          <td><strong style="color:var(--text-primary)">{{ room.roomNumber }}</strong></td>
+          <td>
+            <span style="display:flex;align-items:center;gap:.4rem">
+              {{ typeIcon(room.roomType) }} {{ room.roomType }}
+            </span>
+          </td>
+          <td>{{ room.floor }}</td>
+          <td>{{ room.capacity }} pers.</td>
+          <td class="price-cell">{{ room.pricePerNight | number:'1.0-0' }} MAD</td>
+          <td><span class="badge-luxe" [class]="badgeClass(room.status)">{{ statusLabel(room.status) }}</span></td>
+          <td>
+            <div class="amenities">
+              <span class="amenity" *ngIf="room.hasWifi" title="WiFi">📶</span>
+              <span class="amenity" *ngIf="room.hasMinibar" title="Minibar">🍾</span>
+              <span class="amenity" *ngIf="room.hasBalcony" title="Balcon">🌿</span>
+              <span class="amenity" *ngIf="room.hasJacuzzi" title="Jacuzzi">🛁</span>
+            </div>
+          </td>
+          <td *ngIf="authService.isAdmin()">
+            <div style="display:flex;gap:.4rem">
+              <button class="btn-luxe btn-outline btn-icon" (click)="openEdit(room)" title="Modifier">✏</button>
+              <button class="btn-luxe btn-danger btn-icon" (click)="delete(room.id!)" title="Supprimer">✕</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="$event.target === $event.currentTarget && (showModal=false)">
+  <div class="modal-box slide-up">
+    <div class="modal-header">
+      <h3>{{ editMode ? 'Modifier la chambre' : 'Nouvelle chambre' }}</h3>
+      <button class="close-btn" (click)="showModal=false">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Numéro de chambre *</label>
+          <input class="form-control" type="text" [(ngModel)]="form.roomNumber" placeholder="ex: 101"/>
+        </div>
+        <div class="form-group">
+          <label>Type *</label>
+          <select class="form-control" [(ngModel)]="form.roomType">
+            <option *ngFor="let t of roomTypes" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Étage</label>
+          <input class="form-control" type="number" [(ngModel)]="form.floor" min="1"/>
+        </div>
+        <div class="form-group">
+          <label>Capacité</label>
+          <input class="form-control" type="number" [(ngModel)]="form.capacity" min="1"/>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Prix / nuit (MAD) *</label>
+          <input class="form-control" type="number" [(ngModel)]="form.pricePerNight" min="0"/>
+        </div>
+        <div class="form-group">
+          <label>Statut</label>
+          <select class="form-control" [(ngModel)]="form.status">
+            <option *ngFor="let s of roomStatuses" [value]="s">{{ statusLabel(s) }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea class="form-control" rows="2" [(ngModel)]="form.description" placeholder="Description de la chambre..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>URL Image</label>
+        <input class="form-control" type="url" [(ngModel)]="form.imageUrl" placeholder="https://..."/>
+      </div>
+      <div class="form-group">
+        <label>Équipements</label>
+        <div class="checkbox-row">
+          <label class="cb-item"><input type="checkbox" [(ngModel)]="form.hasWifi"/> WiFi</label>
+          <label class="cb-item"><input type="checkbox" [(ngModel)]="form.hasMinibar"/> Minibar</label>
+          <label class="cb-item"><input type="checkbox" [(ngModel)]="form.hasBalcony"/> Balcon</label>
+          <label class="cb-item"><input type="checkbox" [(ngModel)]="form.hasJacuzzi"/> Jacuzzi</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-luxe btn-outline" (click)="showModal=false">Annuler</button>
+      <button class="btn-luxe btn-primary" (click)="save()" [disabled]="saving">
+        {{ saving ? 'Enregistrement...' : (editMode ? 'Modifier' : 'Créer') }}
+      </button>
+    </div>
+  </div>
+</div>

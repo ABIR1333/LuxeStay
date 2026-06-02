@@ -1,0 +1,55 @@
+.filters-bar {
+  display: flex;
+  align-items: center;
+  gap: .875rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.25rem;
+}
+
+.table-card { padding: 0; overflow: hidden; }
+
+.loading-spinner {
+  width: 32px; height: 32px;
+  border: 3px solid var(--surface-1);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 2rem auto;
+  display: block;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.price-cell {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold) !important;
+}
+
+.amenities { display: flex; gap: .3rem; }
+.amenity { font-size: .95rem; cursor: default; }
+
+.checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+
+  .cb-item {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-transform: none;
+    letter-spacing: 0;
+
+    input[type="checkbox"] {
+      accent-color: var(--gold);
+      width: 15px; height: 15px;
+      cursor: pointer;
+    }
+  }
+}

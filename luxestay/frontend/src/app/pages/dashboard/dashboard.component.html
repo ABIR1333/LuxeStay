@@ -1,0 +1,57 @@
+<!-- ============================================================
+     LUXESTAY — DASHBOARD
+     ============================================================ -->
+
+<div *ngIf="loading" class="loading-screen">
+  <div class="loading-spinner"></div>
+  <p>Chargement du tableau de bord...</p>
+</div>
+
+<div *ngIf="!loading && stats" class="fade-in">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Tableau de bord</h1>
+      <p class="page-subtitle">
+        {{ today | date:'EEEE d MMMM yyyy':'':'fr' | titlecase }}
+      </p>
+    </div>
+
+    <div class="header-actions">
+      <a routerLink="/reservations" class="btn-luxe btn-primary">
+        + Nouvelle réservation
+      </a>
+    </div>
+  </div>
+
+  <div class="grid-4">
+
+    <div class="stat-card">
+      <div class="stat-icon">🏨</div>
+      <div class="stat-label">Chambres totales</div>
+      <div class="stat-value">{{ stats.totalRooms }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">✓</div>
+      <div class="stat-label">Taux d'occupation</div>
+      <div class="stat-value">{{ stats.occupancyRate }}%</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div class="stat-label">Réservations</div>
+      <div class="stat-value">{{ stats.totalReservations }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-label">Revenu mensuel</div>
+      <div class="stat-value">
+        {{ formatCurrency(stats.monthlyRevenue) }}
+      </div>
+    </div>
+
+  </div>
+
+</div>

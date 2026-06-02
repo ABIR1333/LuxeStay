@@ -1,0 +1,564 @@
+// ============================================================
+// LUXESTAY — GLOBAL STYLES
+// Premium Hotel Management System Theme
+// ============================================================
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+// ============================================================
+// CSS VARIABLES — DESIGN TOKENS
+// ============================================================
+:root {
+  // Brand Colors
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-dark: #9A7A2E;
+  --gold-muted: rgba(201, 168, 76, 0.12);
+
+  // Background system
+  --bg-primary: #0A0C0F;
+  --bg-secondary: #111418;
+  --bg-card: #161A20;
+  --bg-card-hover: #1C2128;
+  --bg-elevated: #1E242C;
+  --bg-overlay: rgba(10, 12, 15, 0.85);
+
+  // Surface colors
+  --surface-1: #1A1F26;
+  --surface-2: #202830;
+  --surface-border: rgba(255,255,255,0.07);
+  --surface-border-hover: rgba(201,168,76,0.3);
+
+  // Text
+  --text-primary: #F0EDE8;
+  --text-secondary: #9BA4B0;
+  --text-muted: #5A6474;
+  --text-gold: #C9A84C;
+
+  // Semantic colors
+  --success: #2ECC71;
+  --success-bg: rgba(46,204,113,0.1);
+  --warning: #F39C12;
+  --warning-bg: rgba(243,156,18,0.1);
+  --danger: #E74C3C;
+  --danger-bg: rgba(231,76,60,0.1);
+  --info: #3498DB;
+  --info-bg: rgba(52,152,219,0.1);
+
+  // Spacing
+  --sidebar-width: 260px;
+  --navbar-height: 64px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  // Shadows
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
+  --shadow-gold: 0 4px 20px rgba(201,168,76,0.2);
+
+  // Transitions
+  --transition: all 0.2s ease;
+  --transition-slow: all 0.35s ease;
+}
+
+// ============================================================
+// BASE RESET
+// ============================================================
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  font-size: 0.9rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+// ============================================================
+// TYPOGRAPHY
+// ============================================================
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.display-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// ============================================================
+// SCROLLBAR
+// ============================================================
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+
+// ============================================================
+// LUXE CARDS
+// ============================================================
+.luxe-card {
+  background: var(--bg-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, rgba(201,168,76,0.04), transparent);
+    pointer-events: none;
+  }
+
+  &:hover {
+    border-color: var(--surface-border-hover);
+    background: var(--bg-card-hover);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+}
+
+// ============================================================
+// STAT CARDS
+// ============================================================
+.stat-card {
+  @extend .luxe-card;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+
+  .stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+
+    &.gold    { background: var(--gold-muted);    color: var(--gold); }
+    &.success { background: var(--success-bg);    color: var(--success); }
+    &.info    { background: var(--info-bg);        color: var(--info); }
+    &.warning { background: var(--warning-bg);    color: var(--warning); }
+    &.danger  { background: var(--danger-bg);     color: var(--danger); }
+  }
+
+  .stat-content {
+    flex: 1;
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+    .stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+    .stat-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+  }
+}
+
+// ============================================================
+// BUTTONS
+// ============================================================
+.btn-luxe {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+  font-family: 'DM Sans', sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &.btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: #0A0C0F;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(201,168,76,0.3);
+    &:hover { box-shadow: var(--shadow-gold); transform: translateY(-1px); filter: brightness(1.05); }
+  }
+
+  &.btn-outline {
+    background: transparent;
+    border: 1px solid var(--surface-border);
+    color: var(--text-secondary);
+    &:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-muted); }
+  }
+
+  &.btn-danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(231,76,60,0.2);
+    &:hover { background: var(--danger); color: white; }
+  }
+
+  &.btn-success {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid rgba(46,204,113,0.2);
+    &:hover { background: var(--success); color: white; }
+  }
+
+  &.btn-icon {
+    padding: 0.45rem;
+    width: 34px;
+    height: 34px;
+    justify-content: center;
+  }
+}
+
+// ============================================================
+// BADGES
+// ============================================================
+.badge-luxe {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &.available  { background: var(--success-bg); color: var(--success); }
+  &.occupied   { background: var(--danger-bg);  color: var(--danger); }
+  &.reserved   { background: var(--info-bg);    color: var(--info); }
+  &.maintenance{ background: var(--warning-bg); color: var(--warning); }
+  &.pending    { background: var(--warning-bg); color: var(--warning); }
+  &.confirmed  { background: var(--info-bg);    color: var(--info); }
+  &.checked_in { background: var(--success-bg); color: var(--success); }
+  &.checked_out{ background: rgba(255,255,255,0.05); color: var(--text-muted); }
+  &.cancelled  { background: var(--danger-bg);  color: var(--danger); }
+  &.paid       { background: var(--success-bg); color: var(--success); }
+  &.unpaid     { background: var(--danger-bg);  color: var(--danger); }
+  &.partial    { background: var(--warning-bg); color: var(--warning); }
+  &.gold       { background: var(--gold-muted); color: var(--gold); }
+}
+
+// ============================================================
+// TABLE
+// ============================================================
+.luxe-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  thead tr th {
+    padding: 0.75rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--surface-border);
+    white-space: nowrap;
+    background: transparent;
+  }
+
+  tbody tr {
+    transition: var(--transition);
+    td {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--surface-border);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      vertical-align: middle;
+    }
+    &:hover td {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+    }
+    &:last-child td { border-bottom: none; }
+  }
+}
+
+// ============================================================
+// FORMS
+// ============================================================
+.form-group {
+  margin-bottom: 1.25rem;
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 0.45rem;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.65rem 1rem;
+    background: var(--surface-1);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    font-family: 'DM Sans', sans-serif;
+    transition: var(--transition);
+    outline: none;
+
+    &:focus {
+      border-color: var(--gold);
+      background: var(--bg-elevated);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+    }
+
+    &::placeholder { color: var(--text-muted); }
+
+    option {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+  }
+}
+
+// ============================================================
+// MODAL / DIALOG
+// ============================================================
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.15s ease;
+}
+
+.modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.2s ease;
+
+  .modal-header {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--surface-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--text-primary);
+    }
+
+    .close-btn {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: var(--surface-1);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: var(--transition);
+      &:hover { background: var(--danger-bg); color: var(--danger); }
+    }
+  }
+
+  .modal-body { padding: 1.5rem; }
+
+  .modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--surface-border);
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+  }
+}
+
+// ============================================================
+// PAGE HEADER
+// ============================================================
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .page-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+  }
+}
+
+// ============================================================
+// UTILITIES
+// ============================================================
+.gold { color: var(--gold) !important; }
+.text-muted { color: var(--text-muted) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+
+.divider {
+  height: 1px;
+  background: var(--surface-border);
+  margin: 1.5rem 0;
+}
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+// ============================================================
+// ANIMATIONS
+// ============================================================
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.fade-in { animation: fadeIn 0.3s ease; }
+.slide-up { animation: slideUp 0.3s ease; }
+
+// Loading skeleton
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-1) 25%, var(--surface-2) 50%, var(--surface-1) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+// ============================================================
+// EMPTY STATE
+// ============================================================
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  p { font-size: 0.85rem; }
+}
+
+// ============================================================
+// SNACKBAR / TOAST
+// ============================================================
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toast {
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.2s ease;
+  min-width: 280px;
+
+  &.success { background: #1a3a2a; border: 1px solid rgba(46,204,113,0.3); color: var(--success); }
+  &.error   { background: #3a1a1a; border: 1px solid rgba(231,76,60,0.3);   color: var(--danger); }
+  &.info    { background: #1a2a3a; border: 1px solid rgba(52,152,219,0.3);  color: var(--info); }
+}
+
+// ============================================================
+// ANGULAR MATERIAL OVERRIDES
+// ============================================================
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: var(--bg-elevated) !important;
+  --mdc-snackbar-supporting-text-color: var(--text-primary) !important;
+}

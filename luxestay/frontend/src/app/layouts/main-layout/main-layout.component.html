@@ -1,0 +1,86 @@
+<!-- ============================================================
+     LUXESTAY — MAIN LAYOUT
+     ============================================================ -->
+<div class="app-shell" [class.sidebar-collapsed]="!sidebarOpen()">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="sidebar">
+
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <span class="logo-icon">✦</span>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">LuxeStay</span>
+        <span class="brand-tagline">Hotel Management</span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Navigation</span>
+      <ul class="nav-list">
+        <li *ngFor="let item of visibleNavItems">
+          <a
+            class="nav-item"
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: item.route === '/dashboard'}"
+          >
+            <span class="nav-icon">{{ item.icon }}</span>
+            <span class="nav-label">{{ item.label }}</span>
+            <span class="nav-badge" *ngIf="item.badge">{{ item.badge }}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">{{ userInitials }}</div>
+        <div class="user-info">
+          <span class="user-name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</span>
+          <span class="user-role">{{ userRole }}</span>
+        </div>
+        <button class="logout-btn" (click)="logout()" title="Se déconnecter">⏻</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===================== MAIN CONTENT ===================== -->
+  <div class="main-wrapper">
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <div class="navbar-left">
+        <button class="toggle-btn" (click)="toggleSidebar()">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="breadcrumb-area">
+          <span class="hotel-greeting">Bienvenue,&nbsp;</span>
+          <span class="hotel-name">{{ currentUser?.firstName }}</span>
+        </div>
+      </div>
+
+      <div class="navbar-right">
+        <div class="time-display">
+          <span class="time-value">{{ currentTime | date:'HH:mm' }}</span>
+          <span class="time-date">{{ currentTime | date:'EEE d MMM':'':'fr' }}</span>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="user-pill">
+          <div class="user-avatar-sm">{{ userInitials }}</div>
+          <span class="user-name-sm">{{ currentUser?.firstName }}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="page-content">
+      <router-outlet />
+    </main>
+
+  </div><!-- /main-wrapper -->
+</div><!-- /app-shell -->
